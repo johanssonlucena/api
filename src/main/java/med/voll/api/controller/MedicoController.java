@@ -35,7 +35,7 @@ public class MedicoController {
 	
 	@GetMapping
 	public List<ListaMedicos> listarMedicos() {
-		return repository.findAll().stream().map(ListaMedicos::new).toList();
+		return repository.findAllByAtivoTrue().stream().map(ListaMedicos::new).toList();
 	}
 	
 	
@@ -49,7 +49,8 @@ public class MedicoController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public void excluir(@PathVariable Long id) {
-		repository.deleteById(id);
+		Medico medico = repository.getReferenceById(id);
+		medico.desativar();
 	}
 	
 }
