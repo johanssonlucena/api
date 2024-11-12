@@ -1,4 +1,4 @@
-package med.voll.api.medicos;
+package med.voll.api.Model;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -8,12 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.endereco.Endereco;
+import med.voll.api.DTO.AtualizarMedicoDTO;
+import med.voll.api.DTO.MedicoDTO;
+import med.voll.api.Enum.Especialidades;
 
 @Table(name = "medicos")
 @Entity(name = "Medico")
@@ -36,29 +37,29 @@ public class Medico {
 	private Endereco endereco;
 	private boolean ativo;
 	
-	public Medico(CadastroMedicos dados) {
+	public Medico(MedicoDTO medicoDTO) {
 		this.ativo = true;
-		this.nome = dados.nome();
-		this.email = dados.email();
-		this.telefone = dados.telefone();
-		this.crm = dados.crm();
-		this.especialidade = dados.especialidade();
-		this.endereco = new Endereco(dados.endereco());
+		this.nome = medicoDTO.nome();
+		this.email = medicoDTO.email();
+		this.telefone = medicoDTO.telefone();
+		this.crm = medicoDTO.crm();
+		this.especialidade = medicoDTO.especialidade();
+		this.endereco = new Endereco(medicoDTO.endereco());
 	}
 
-	public void atualizarDados(AtualizarMedicos dados) {
+	public void atualizarDados(AtualizarMedicoDTO dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }
         if (dados.telefone() != null) {
             this.telefone = dados.telefone();
         }
-        if (dados.endereco() != null) {
-            this.endereco.atualizarEndereco(dados.endereco());
+        if (dados.enderecoDTO() != null) {
+            this.endereco.atualizarEndereco(dados.enderecoDTO());
         }
 	}
 
-	public void desativar() {
+	public void desativarMedico() {
 		this.ativo = false;
 	}
 	

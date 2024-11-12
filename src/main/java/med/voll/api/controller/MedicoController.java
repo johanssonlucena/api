@@ -1,7 +1,6 @@
-package med.voll.api.controller;
+package med.voll.api.Controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,43 +13,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.medicos.AtualizarMedicos;
-import med.voll.api.medicos.CadastroMedicos;
-import med.voll.api.medicos.ListaMedicos;
-import med.voll.api.medicos.Medico;
-import med.voll.api.medicos.MedicoRepository;
+import med.voll.api.DTO.AtualizarMedicoDTO;
+import med.voll.api.DTO.ListarMedicosDTO;
+import med.voll.api.DTO.MedicoDTO;
+import med.voll.api.Model.Medico;
+import med.voll.api.Repository.MedicosRepository;
 
 @RestController
 @RequestMapping("medicos")
 public class MedicoController {
 	
 	@Autowired
-	private MedicoRepository repository;
+	private MedicosRepository repository;
 
 	@PostMapping
 	@Transactional
-	public void cadastrar(@RequestBody @Valid CadastroMedicos dados) {
-		repository.save(new Medico(dados));
+	public void cadastrarMedico(@RequestBody @Valid MedicoDTO medicoDTO) {
+		repository.save(new Medico(medicoDTO));
 	}
 	
 	@GetMapping
-	public List<ListaMedicos> listarMedicos() {
-		return repository.findAllByAtivoTrue().stream().map(ListaMedicos::new).toList();
+	public List<ListarMedicosDTO> listarMedicos() {
+		return repository.findAllByAtivoTrue().stream().map(ListarMedicosDTO::new).toList();
 	}
 	
 	
 	@PutMapping
 	@Transactional
-	public void atualizar(@RequestBody @Valid AtualizarMedicos dados) {
-		Medico medico = repository.getReferenceById(dados.id());
-		medico.atualizarDados(dados);
+	public void atualizarMedico(@RequestBody @Valid AtualizarMedicoDTO atualizarMedicoDTO) {
+		Medico medico = repository.getReferenceById(atualizarMedicoDTO.id());
+		medico.atualizarDados(atualizarMedicoDTO);
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public void excluir(@PathVariable Long id) {
 		Medico medico = repository.getReferenceById(id);
-		medico.desativar();
+		medico.desativarMedico();
 	}
 	
 }
