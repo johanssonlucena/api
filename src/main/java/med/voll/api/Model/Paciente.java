@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import med.voll.api.DTO.AtualizarPacienteDTO;
 import med.voll.api.DTO.PacienteDTO;
 
 @Table(name = "pacientes")
@@ -36,6 +37,19 @@ public class Paciente {
 		this.telefone = pacienteDTO.telefone();
 		this.cpf = pacienteDTO.cpf();
 		this.endereco = new Endereco(pacienteDTO.endereco());
+	}
+	
+	public void atualizarDados(AtualizarPacienteDTO atualizarPacienteDTO) {
+		if (this.nome != null) {
+			this.nome = atualizarPacienteDTO.nome();
+		}
+		if (this.telefone != null) {
+			this.telefone = atualizarPacienteDTO.telefone();
+		}
+		if (this.endereco != null) {
+			this.endereco.atualizarEndereco(atualizarPacienteDTO.endereco());
+		}
+		
 	}
 
 }

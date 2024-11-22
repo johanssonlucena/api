@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import med.voll.api.DTO.AtualizarPacienteDTO;
 import med.voll.api.DTO.ListarPacientesDTO;
 import med.voll.api.DTO.PacienteDTO;
 import med.voll.api.Model.Paciente;
@@ -32,4 +34,12 @@ public class PacienteController {
 	public List<ListarPacientesDTO> listarPacientes() {
 		return repository.findAll().stream().map(ListarPacientesDTO::new).toList();
 	}
+	
+	@PutMapping
+	@Transactional
+	public void atualizarPaciente(@RequestBody @Valid AtualizarPacienteDTO atualizarPacienteDTO) {
+		Paciente paciente = repository.getReferenceById(atualizarPacienteDTO.id());
+		paciente.atualizarDados(atualizarPacienteDTO);
+	}
+	
 }
